@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
-import { Github, Linkedin, Mail, ArrowUpRight } from 'lucide-react';
+import { Github, Linkedin, Mail, X, ArrowUpRight, Copy, Check } from 'lucide-react';
 
 /* ═══════════════════════════════════════════════════════════════
    TOKENS — blueprint navy, coral reserved for coatings & marks
@@ -574,6 +574,19 @@ const ROLES = [
   },
 ];
 
+const PRODUCTS = [
+  {
+    company: 'Utilnation', year: '2026',
+    desc: 'An all-in-one utilities web app — weather, geocoded city search, currency exchange, world clocks, holidays, translation, and news — that adapts automatically by geolocation. Live and indexed across a growing set of countries.',
+    stack: ['Next.js 16', 'React 19', 'TypeScript', 'Tailwind CSS v4', 'next-themes'],
+    apis: ['Open-Meteo', 'ExchangeRate-API', 'MyMemory', 'Nager.Date', 'GNews'],
+    operator: 'Tropic Stack LLC',
+    operatorUrl: 'https://www.tropicstackllc.com',
+    url: 'https://www.utilnation.com',
+    shot: '/utilnation_screen.png',
+  },
+];
+
 const PROCESS = [
   { n: '01', t: 'Understand', d: 'Find the actual problem before writing anything.' },
   { n: '02', t: 'Architect', d: 'Design the system and the experience together, not one after the other.' },
@@ -583,7 +596,7 @@ const PROCESS = [
 
 const SKILLS = {
   Engineering: ['React', 'Node.js', 'TypeScript', 'GraphQL', 'PostgreSQL', 'Python', 'AWS', 'TDD'],
-  Creation: ['Three.js', 'GLSL / shaders', 'Motion & interaction', 'Figma / Framer', 'Art direction', 'Generative video'],
+  Creation: ['Three.js',  'Motion & interaction', 'Figma / Framer', 'Art direction', 'Generative video'],
 };
 
 /* ═══════════════════════════════════════════════════════════════ */
@@ -591,7 +604,9 @@ export default function Portfolio() {
   const [track, setTrack] = useState('engineering');
   const [scrolled, setScrolled] = useState(false);
   const [videoOk, setVideoOk] = useState(true);
+  const [shotOk, setShotOk] = useState(true);
   const [stage, setStage] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const heroRef = useRef(null);
   const railRef = useRef(null);
@@ -605,6 +620,12 @@ export default function Portfolio() {
   }, []);
 
   const s = STAGES[stage];
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText('contact@lques.dev');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="pg">
@@ -764,12 +785,27 @@ export default function Portfolio() {
 .chip{font-family:var(--spec);font-size:${TYPE.spec.label}px;letter-spacing:.02em;padding:6px 12px;
   border:1px solid var(--border);border-radius:99px;color:var(--muted);}
 
+/* products (reuses .role / .chip / .lab-frame / .lab-miss) */
+.role--product .role-co{margin-bottom:16px;}
+.role-apis{margin-top:26px;max-width:560px;}
+.role-apis-title{font-family:var(--spec);font-size:${TYPE.spec.label}px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);display:block;margin-bottom:8px;}
+.role-operator{font-family:var(--spec);font-size:${TYPE.spec.label}px;letter-spacing:.11em;
+  text-transform:uppercase;color:var(--muted);display:inline-block;margin-top:14px;
+  transition:color .2s;}
+.role-operator:hover{color:var(--accent);}
+.product-shot{max-width:560px;margin:18px 0;}
+.golink{display:inline-flex;align-items:center;gap:6px;font-family:var(--spec);
+  font-size:${TYPE.spec.accent}px;letter-spacing:.02em;color:var(--accent);
+  margin-top:18px;transition:opacity .2s;}
+.golink:hover{opacity:.75;}
+
 /* visual lab */
 .lab{max-width:620px;margin:0;}
 .lab-frame{position:relative;aspect-ratio:16/9;border:1px solid var(--border);border-radius:3px;
   overflow:hidden;background-size:cover;background-position:center;transition:border-color .3s;}
 .lab-frame:hover{border-color:var(--accent);}
-.lab-frame video{width:100%;height:100%;object-fit:cover;display:block;}
+.lab-frame video,.lab-frame img{width:100%;height:100%;object-fit:cover;display:block;}
 .lab-miss{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   text-align:center;padding:24px;font-family:var(--spec);font-size:${TYPE.spec.label}px;
   line-height:1.8;color:var(--muted);background:rgba(7,13,26,.72);}
@@ -796,16 +832,22 @@ export default function Portfolio() {
 @media (max-width:640px){.skills{grid-template-columns:1fr;}}
 
 /* contact */
-.ctitle{font-size:${fluid(TYPE.disp.contact)};margin-bottom:52px;}
-.doors{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:52px;}
-.door{border:1px solid var(--border);border-radius:3px;padding:30px;display:block;
-  transition:border-color .25s,background .25s;}
-.door:hover{border-color:var(--accent);background:var(--surface);}
-.door p{color:var(--muted);font-size:${TYPE.body.caption}px;margin-bottom:14px;}
-.door span{display:flex;align-items:center;gap:8px;font-family:var(--disp);
-  font-variation-settings:'opsz' ${TYPE.disp.cardMd.opsz},'wdth' ${TYPE.disp.cardMd.wdth},'wght' ${TYPE.disp.cardMd.wght};font-size:${TYPE.disp.cardMd.px}px;
-  letter-spacing:-0.02em;color:var(--accent);}
-@media (max-width:640px){.doors{grid-template-columns:1fr;}}
+h2.ctitle{font-size:${fluid(TYPE.disp.contact)};margin-bottom:28px;}
+p.contact-lede{color:var(--muted);font-size:${TYPE.body.caption}px;max-width:560px;margin-bottom:52px;}
+.contact-rows{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:52px;}
+.contact-row{display:flex;flex-direction:column;align-items:center;text-align:center;gap:16px;
+  border:1px solid var(--border);border-radius:3px;padding:30px;transition:border-color .25s,background .25s;}
+.contact-row:hover{border-color:var(--accent);background:var(--surface);}
+.contact-row p{color:var(--muted);font-size:${TYPE.body.caption}px;}
+@media (max-width:640px){.contact-rows{grid-template-columns:1fr;gap:20px;}}
+.contact-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:auto;
+  font-family:var(--disp);font-variation-settings:'opsz' ${TYPE.disp.cardMd.opsz},
+  'wdth' ${TYPE.disp.cardMd.wdth},'wght' ${TYPE.disp.cardMd.wght};
+  font-size:${TYPE.disp.cardMd.px}px;letter-spacing:-0.01em;padding:16px 32px;
+  border:1px solid var(--accent);border-radius:99px;color:var(--bg);
+  background:var(--accent);cursor:pointer;transition:opacity .25s;}
+.contact-btn:hover{opacity:.88;}
+a.contact-btn{color:var(--bg);}
 .social{display:flex;gap:22px;padding-top:36px;border-top:1px solid var(--border);}
 .social a{color:var(--muted);transition:color .2s;}
 .social a:hover{color:var(--accent);}
@@ -896,7 +938,10 @@ export default function Portfolio() {
           <div className="tabs" role="tablist">
             <button role="tab" aria-selected={track === 'engineering'} data-h
               className={`tab ${track === 'engineering' ? 'tab--on' : ''}`}
-              onClick={() => setTrack('engineering')}>Engineering</button>
+              onClick={() => setTrack('engineering')}>Work History</button>
+            <button role="tab" aria-selected={track === 'products'} data-h
+              className={`tab ${track === 'products' ? 'tab--on' : ''}`}
+              onClick={() => setTrack('products')}>Products</button>
             <button role="tab" aria-selected={track === 'lab'} data-h
               className={`tab ${track === 'lab' ? 'tab--on' : ''}`}
               onClick={() => setTrack('lab')}>Visual Lab</button>
@@ -916,6 +961,46 @@ export default function Portfolio() {
                     </div>
                   </div>
                   <span className="role-yr">{r.year}</span>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+        ) : track === 'products' ? (
+          <div className="roles">
+            {PRODUCTS.map((p, i) => (
+              <Reveal key={`${p.company}-${p.year}`} delay={i * 55}>
+                <article className="role role--product">
+                  <div>
+                    <h3 className="role-co">{p.company}</h3>
+                    <p className="role-desc">{p.desc}</p>
+                    <div className="chips">
+                      {p.stack.map((x) => <span className="chip" key={x}>{x}</span>)}
+                    </div>
+                    <div className="role-apis">
+                      <span className="role-apis-title">Integrations</span>
+                      <div className="chips">
+                        {p.apis.map((x) => <span className="chip" key={x}>{x}</span>)}
+                      </div>
+                    </div>
+                    <a href={p.operatorUrl} target="_blank" rel="noreferrer" data-h className="role-operator">
+                      Operated by {p.operator}
+                    </a>
+                    <div className="lab-frame product-shot" style={{ backgroundImage: `url(${LQIP})` }}>
+                      {shotOk && (
+                        <img src={p.shot} alt={`${p.company} screenshot`} onError={() => setShotOk(false)} />
+                      )}
+                      {!shotOk && (
+                        <div className="lab-miss">
+                          utilnation_screen.png<br />
+                          <span style={{ opacity: .6 }}>drop the file into /public to display it</span>
+                        </div>
+                      )}
+                    </div>
+                    <a href={p.url} target="_blank" rel="noreferrer" data-h className="golink">
+                      View project <ArrowUpRight size={15} />
+                    </a>
+                  </div>
+                  <span className="role-yr">{p.year}</span>
                 </article>
               </Reveal>
             ))}
@@ -973,25 +1058,37 @@ export default function Portfolio() {
 
       {/* ── CONTACT ──────────────────────────────────────────── */}
       <section className="sec" id="contact">
-        <Reveal><h2 className="disp ctitle">Two doors, one practice.</h2></Reveal>
-        <br/>
-        <div className="doors">
-          <Reveal>
-            <a href="mailto:contact@lques.dev" className="door" data-h>
-              <p>Looking for a fullstack developer?</p>
-              <span>Let's talk <ArrowUpRight size={17} /></span>
-            </a>
-          </Reveal>
+        <Reveal><h2 className="disp ctitle">Get in touch</h2></Reveal>
+        <Reveal delay={40}>
+          <p className="contact-lede">
+            Personal engineering work goes through me directly. Project builds
+            for a brand or business go through Tropic Stack LLC.
+          </p>
+        </Reveal>
+        <div className="contact-rows">
           <Reveal delay={70}>
-            <a href="mailto:contact@lques.dev" className="door" data-h>
-              <p>Looking for a creative build?</p>
-              <span>Let's make it <ArrowUpRight size={17} /></span>
-            </a>
+            <div className="contact-row">
+              <p>Looking for a fullstack developer?</p>
+              <button type="button" className="contact-btn" data-h onClick={copyEmail}>
+                {copied ? <Check size={18} /> : <Copy size={18} />}
+                {copied ? 'Copied' : 'contact@lques.dev'}
+              </button>
+            </div>
+          </Reveal>
+          <Reveal delay={110}>
+            <div className="contact-row">
+              <p>Have a project for your brand or business?</p>
+              <a href="https://www.tropicstackllc.com" target="_blank" rel="noreferrer"
+                className="contact-btn" data-h>
+                Visit Tropic Stack LLC <ArrowUpRight size={18} />
+              </a>
+            </div>
           </Reveal>
         </div>
         <div className="social">
           <a href="https://github.com/devlques" target="_blank" rel="noreferrer" data-h aria-label="GitHub"><Github size={18} /></a>
           <a href="https://www.linkedin.com/in/luis-carlos-quesada-sequeira-167520101/" target="_blank" rel="noreferrer" data-h aria-label="LinkedIn"><Linkedin size={18} /></a>
+          <a href="https://x.com/devlques" target="_blank" rel="noreferrer" data-h aria-label="X (Twitter)"><X size={18} /></a>
           <a href="mailto:contact@lques.dev" data-h aria-label="Email"><Mail size={18} /></a>
         </div>
       </section>
