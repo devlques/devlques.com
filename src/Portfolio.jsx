@@ -977,13 +977,13 @@ export default function Portfolio() {
         <br/>
         <div className="doors">
           <Reveal>
-            <a href="mailto:contact@devlques.com" className="door" data-h>
+            <a href="mailto:contact@lques.dev" className="door" data-h>
               <p>Looking for a fullstack developer?</p>
               <span>Let's talk <ArrowUpRight size={17} /></span>
             </a>
           </Reveal>
           <Reveal delay={70}>
-            <a href="mailto:contact@devlques.com" className="door" data-h>
+            <a href="mailto:contact@lques.dev" className="door" data-h>
               <p>Looking for a creative build?</p>
               <span>Let's make it <ArrowUpRight size={17} /></span>
             </a>
@@ -992,7 +992,7 @@ export default function Portfolio() {
         <div className="social">
           <a href="https://github.com/devlques" target="_blank" rel="noreferrer" data-h aria-label="GitHub"><Github size={18} /></a>
           <a href="https://www.linkedin.com/in/luis-carlos-quesada-sequeira-167520101/" target="_blank" rel="noreferrer" data-h aria-label="LinkedIn"><Linkedin size={18} /></a>
-          <a href="mailto:contact@devlques.com" data-h aria-label="Email"><Mail size={18} /></a>
+          <a href="mailto:contact@lques.dev" data-h aria-label="Email"><Mail size={18} /></a>
         </div>
       </section>
 
