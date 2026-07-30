@@ -548,7 +548,7 @@ const ROLES = [
     stack: ['WordPress', 'React', 'Python', 'PostgreSQL'],
   },
   {
-    company: 'Hanson Consulting Group / Microsoft', year: '2025',
+    company: 'Hanson Consulting Group - Microsoft', year: '2025',
     desc: 'UI features and improved UX practices for Xbox game developer web applications.',
     stack: ['UI engineering', 'UX practice'],
   },
